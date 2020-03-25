@@ -2,7 +2,7 @@
   "name": "copyselectionwithminimalindention",
   "displayName": "Copy Selection With Minimal Indention",
   "description": "This extension copies text and strips common prefixed whitespace from it so you can paste it nicely into a chat/forum",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "pardeike",
   "repository": "https://github.com/pardeike/VSCode-CopySelectionWithMinimalIndention",
   "engines": {
@@ -11,15 +11,27 @@
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "indent",
+    "snippet",
+    "discord",
+    "copy",
+    "selection"
+  ],
   "activationEvents": [
-    "onCommand:extension.copyselectionwithminimalindention"
+    "onCommand:extension.copyselectionwithminimalindention1",
+    "onCommand:extension.copyselectionwithminimalindention2"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.copyselectionwithminimalindention",
+        "command": "extension.copyselectionwithminimalindention1",
         "title": "Copy Selection With Minimal Indention"
+      },
+      {
+        "command": "extension.copyselectionwithminimalindention2",
+        "title": "Copy Selection With Minimal Indention (with language)"
       }
     ]
   },

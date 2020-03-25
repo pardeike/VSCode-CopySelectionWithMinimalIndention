@@ -8,6 +8,10 @@ This extension allows you to copy part of your source code in a way that allows 
 
 ## Release Notes
 
+### 1.0.1
+
+Added a second command that surrounds the copied lines with triple backticks and language id
+
 ### 1.0.0
 
 Initial release

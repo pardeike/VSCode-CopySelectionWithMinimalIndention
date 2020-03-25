@@ -18,32 +18,44 @@ function processLines(lines: TextLine[], eol: string): string {
   return croppedLines.join(eol);
 }
 
-export function activate(context: vscode.ExtensionContext) {
-  let disposable = vscode.commands.registerCommand(
-    "extension.copyselectionwithminimalindention",
-    () => {
-      const editor = vscode.window.activeTextEditor;
-      if (!editor) {
-        return;
-      }
-      let lines: TextLine[] = [];
-      editor.selections.forEach(selection => {
-        const startLine = selection.start.line;
-        const endLine = selection.end.line;
-        for (let i = startLine; i <= endLine; i++) {
-          lines.push(editor.document.lineAt(i));
-        }
-      });
-      if (lines.length > 0) {
-        const eol = editor.document.eol === EndOfLine.CRLF ? "\r\n" : "\n";
-        const text = processLines(lines, eol);
-        vscode.env.clipboard.writeText(text);
-        const lineCount = lines.length;
-        const s = lineCount === 1 ? "" : "s";
-        vscode.window.setStatusBarMessage(`${lineCount} line${s} copied`, 1500);
-      }
+function createAction(useContext: boolean): () => void {
+  return () => {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+      return;
     }
+    const lines: TextLine[] = [];
+    editor.selections.forEach(selection => {
+      const startLine = selection.start.line;
+      const endLine = selection.end.line;
+      for (let i = startLine; i <= endLine; i++) {
+        lines.push(editor.document.lineAt(i));
+      }
+    });
+    if (lines.length > 0) {
+      const eol = editor.document.eol === EndOfLine.CRLF ? "\r\n" : "\n";
+      let text = processLines(lines, eol);
+      if (useContext) {
+        text = `\`\`\`${editor.document.languageId}${eol}${text}${eol}\`\`\``;
+      }
+      vscode.env.clipboard.writeText(text);
+      const lineCount = lines.length;
+      const s = lineCount === 1 ? "" : "s";
+      vscode.window.setStatusBarMessage(`${lineCount} line${s} copied`, 1500);
+    }
+  };
+}
+
+export function activate(context: vscode.ExtensionContext) {
+  const disposable1 = vscode.commands.registerCommand(
+    "extension.copyselectionwithminimalindention1",
+    createAction(false)
   );
-  context.subscriptions.push(disposable);
+  const disposable2 = vscode.commands.registerCommand(
+    "extension.copyselectionwithminimalindention2",
+    createAction(true)
+  );
+  context.subscriptions.push(disposable1);
+  context.subscriptions.push(disposable2);
 }
 export function deactivate() {}
