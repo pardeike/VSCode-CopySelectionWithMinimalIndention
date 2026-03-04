@@ -43,6 +43,10 @@
 		"esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
 		"watch": "tsc -watch -p ./"
 	},
+	"overrides": {
+		"diff": "^8.0.3",
+		"serialize-javascript": "^7.0.4"
+	},
 	"devDependencies": {
 		"@types/glob": "^7.2.0",
 		"@types/mocha": "^9.1.1",
